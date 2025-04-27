@@ -39,7 +39,7 @@ debug
 
 # --- Original JavaScript/Node.js ignores ---
 # dependencies
-/node_modules
+/ui/node_modules
 /.pnp
 .pnp.js
 
