@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 /**
  * Custom hook for using localStorage with React state
@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 export function useLocalStorage(key, initialValue) {
   // Get from local storage then parse stored json or return initialValue
   const readValue = () => {
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
       return initialValue;
     }
 
@@ -29,13 +29,14 @@ export function useLocalStorage(key, initialValue) {
   const setValue = (value) => {
     try {
       // Allow value to be a function so we have same API as useState
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+
       // Save state
       setStoredValue(valueToStore);
-      
+
       // Save to local storage
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
     } catch (error) {
@@ -45,7 +46,6 @@ export function useLocalStorage(key, initialValue) {
 
   useEffect(() => {
     setStoredValue(readValue());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return [storedValue, setValue];

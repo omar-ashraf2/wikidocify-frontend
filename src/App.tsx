@@ -3,12 +3,14 @@
 // import Header from "./components/Header/Header";
 // import Preview from "./components/Preview/Preview";
 // import { DocProvider } from "./context/DocContext";
+import { Button } from "@/components/ui/button";
 import "./styles/App.css";
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold">Hello Vite</h1>
-    // <DocProvider>
+    <div className="flex flex-col items-center justify-center min-h-svh">
+      <Button>Hi Vite</Button>
+    </div> // <DocProvider>
     //   <div className="min-h-screen flex flex-col bg-slate-100 text-gray-800 font-sans">
     //     {/* Header */}
     //     <div className="shadow-sm bg-white border-b border-slate-200">
