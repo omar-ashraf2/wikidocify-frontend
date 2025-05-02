@@ -6,22 +6,22 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 type Props = React.ComponentPropsWithoutRef<"form"> & {
-  onGoogleLogin?: () => void;
-  onGithubLogin?: () => void;
+  onGoogleSignUp?: () => void;
+  onGithubSignUp?: () => void;
 };
 
-export function LoginForm({
+export function SignUpForm({
   className,
-  onGoogleLogin,
-  onGithubLogin,
+  onGoogleSignUp,
+  onGithubSignUp,
   ...props
 }: Props) {
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Login to your account</h1>
+        <h1 className="text-2xl font-bold">Create an account</h1>
         <p className="text-balance text-sm text-muted-foreground">
-          Enter your email below to login to your account
+          Enter your email below to create your account
         </p>
       </div>
 
@@ -32,20 +32,17 @@ export function LoginForm({
         </div>
 
         <div className="grid gap-2">
-          <div className="flex items-center">
-            <Label htmlFor="password">Password</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Forgot your password?
-            </a>
-          </div>
-          <Input id="password" type="password" required />
+          <Label htmlFor="password">Password</Label>
+          <Input id="password" type="password" required minLength={6} />
+        </div>
+
+        <div className="grid gap-2">
+          <Label htmlFor="confirm">Confirm password</Label>
+          <Input id="confirm" type="password" required minLength={6} />
         </div>
 
         <Button type="submit" className="w-full">
-          Login
+          Sign up
         </Button>
 
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
@@ -58,27 +55,27 @@ export function LoginForm({
           type="button"
           variant="outline"
           className="w-full"
-          onClick={onGithubLogin}
+          onClick={onGithubSignUp}
         >
           <GitHubIcon className="mr-2 h-4 w-4" />
-          Login with GitHub
+          Sign up with GitHub
         </Button>
 
         <Button
           type="button"
           variant="outline"
           className="w-full"
-          onClick={onGoogleLogin}
+          onClick={onGoogleSignUp}
         >
           <GoogleIcon className="mr-2 h-4 w-4" />
-          Login with Google
+          Sign up with Google
         </Button>
       </div>
 
       <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
-        <a href="/signup" className="underline underline-offset-4">
-          Sign up
+        Already have an account?{" "}
+        <a href="/login" className="underline underline-offset-4">
+          Login
         </a>
       </div>
     </form>

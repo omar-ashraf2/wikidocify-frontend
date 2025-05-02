@@ -23,7 +23,10 @@ export default function LoginPage() {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm />
+            <LoginForm
+              onGithubLogin={() => (window.location.href = "/api/auth/github")}
+              onGoogleLogin={() => (window.location.href = "/api/auth/google")}
+            />
           </div>
         </div>
       </div>
