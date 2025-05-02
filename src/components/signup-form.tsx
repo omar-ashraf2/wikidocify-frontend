@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { NavLink } from "react-router-dom";
 
 type Props = React.ComponentPropsWithoutRef<"form"> & {
   onGoogleSignUp?: () => void;
@@ -14,10 +15,15 @@ export function SignUpForm({
   className,
   onGoogleSignUp,
   onGithubSignUp,
+  onSubmit,
   ...props
 }: Props) {
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      className={cn("flex flex-col gap-6", className)}
+      onSubmit={onSubmit}
+      {...props}
+    >
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Create an account</h1>
         <p className="text-balance text-sm text-muted-foreground">
@@ -74,9 +80,9 @@ export function SignUpForm({
 
       <div className="text-center text-sm">
         Already have an account?{" "}
-        <a href="/login" className="underline underline-offset-4">
+        <NavLink to="/login" className="underline underline-offset-4">
           Login
-        </a>
+        </NavLink>
       </div>
     </form>
   );
