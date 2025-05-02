@@ -1,8 +1,11 @@
-import React from 'react';
-import { Check, Clock } from 'lucide-react';
+import { Check, Clock } from "lucide-react";
 
-export default function SaveStatus({ status }) {
-  if (status === 'saved') {
+interface SaveStatusProps {
+  status: "saved" | "saving" | "unsaved";
+}
+
+export default function SaveStatus({ status }: SaveStatusProps) {
+  if (status === "saved") {
     return (
       <div className="flex items-center text-xs text-green-600">
         <Check className="h-3 w-3 mr-1" />
@@ -10,8 +13,8 @@ export default function SaveStatus({ status }) {
       </div>
     );
   }
-  
-  if (status === 'saving') {
+
+  if (status === "saving") {
     return (
       <div className="flex items-center text-xs text-amber-600">
         <Clock className="h-3 w-3 mr-1 animate-pulse" />
@@ -19,7 +22,7 @@ export default function SaveStatus({ status }) {
       </div>
     );
   }
-  
+
   return (
     <div className="flex items-center text-xs text-gray-500">
       <span>Unsaved changes</span>

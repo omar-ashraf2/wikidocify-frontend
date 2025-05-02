@@ -1,21 +1,25 @@
-import React, { useState } from 'react';
-import { Send } from 'lucide-react';
-import { useDoc } from '../../context/DocContext';
+import { Send } from "lucide-react";
+import { FormEvent, useState } from "react";
+import { useDoc } from "../../context/DocContext";
 
 export default function CommentForm() {
-  const [newComment, setNewComment] = useState('');
+  const [newComment, setNewComment] = useState("");
   const { addComment } = useDoc();
-  
-  const handleSubmit = (e) => {
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (!newComment.trim()) return;
-    
+
     addComment(newComment.trim());
-    setNewComment('');
+    setNewComment("");
   };
-  
+
   return (
-    <form onSubmit={handleSubmit} className="px-4 py-3 border-t border-gray-200 flex" data-testid="comment-form">
+    <form
+      onSubmit={handleSubmit}
+      className="px-4 py-3 border-t border-gray-200 flex"
+      data-testid="comment-form"
+    >
       <input
         type="text"
         className="flex-1 rounded-l-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"

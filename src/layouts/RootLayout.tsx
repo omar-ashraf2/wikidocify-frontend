@@ -4,16 +4,14 @@ export default function RootLayout() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b bg-background/60 backdrop-blur">
-        <nav className="container flex h-14 items-center gap-6">
-          <h1 className="text-lg font-semibold">My App</h1>
-          <NavLink to="/" end className="text-sm opacity-75 hover:opacity-100">
-            Home
-          </NavLink>
+        <nav className="container mx-auto flex h-14 items-center justify-between">
+          <h1 className="text-lg font-semibold">WikiDocify</h1>
           <NavLink
-            to="/protected"
-            className="text-sm opacity-75 hover:opacity-100"
+            to="/login"
+            end
+            className="text-sm bg-primary text-primary-foreground shadow hover:bg-primary/90 rounded-md px-4 py-2"
           >
-            Protected
+            Login
           </NavLink>
         </nav>
       </header>

@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff, Share, Upload } from 'lucide-react';
-import { useDoc } from '../../context/DocContext';
-import Button from '../common/Button';
-import SaveStatus from './SaveStatus';
+import { Eye, EyeOff, Share, Upload } from "lucide-react";
+import { FC, useState } from "react";
 
-export default function Header() {
-  const { showPreview, togglePreview, publishDoc, shareDoc, savedStatus } = useDoc();
+import { Button } from "@/components/ui/button";
+import { useDoc } from "@/context/DocContext";
+import SaveStatus from "./SaveStatus";
+
+const Header: FC = () => {
+  const { showPreview, togglePreview, publishDoc, shareDoc, savedStatus } =
+    useDoc();
+
   const [isPublishing, setIsPublishing] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
-  
+
   const handlePublish = async () => {
     setIsPublishing(true);
     try {
@@ -17,7 +20,7 @@ export default function Header() {
       setIsPublishing(false);
     }
   };
-  
+
   const handleShare = async () => {
     setIsSharing(true);
     try {
@@ -30,11 +33,14 @@ export default function Header() {
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 px-4 py-3 flex justify-between items-center">
       <div className="flex items-center space-x-4">
-        <h1 className="text-xl font-semibold text-gray-800">Documentation Editor</h1>
+        <h1 className="text-xl font-semibold text-gray-800">
+          Documentation Editor
+        </h1>
         <SaveStatus status={savedStatus} />
       </div>
+
       <div className="flex items-center space-x-2">
-        <Button 
+        <Button
           variant="secondary"
           onClick={togglePreview}
           data-testid="preview-toggle"
@@ -51,25 +57,29 @@ export default function Header() {
             </>
           )}
         </Button>
-        <Button 
+
+        <Button
           variant="secondary"
           onClick={handleShare}
           disabled={isSharing}
           data-testid="share-button"
         >
           <Share className="h-4 w-4 mr-2" />
-          {isSharing ? 'Sharing...' : 'Share'}
+          {isSharing ? "Sharing..." : "Share"}
         </Button>
-        <Button 
-          variant="primary"
+
+        <Button
+          variant="default"
           onClick={handlePublish}
           disabled={isPublishing}
           data-testid="publish-button"
         >
           <Upload className="h-4 w-4 mr-2" />
-          {isPublishing ? 'Publishing...' : 'Publish'}
+          {isPublishing ? "Publishing..." : "Publish"}
         </Button>
       </div>
     </header>
   );
-}
+};
+
+export default Header;
