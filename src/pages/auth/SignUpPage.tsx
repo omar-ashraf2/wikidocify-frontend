@@ -1,8 +1,40 @@
 import { GalleryVerticalEnd } from "lucide-react";
-
 import { SignUpForm } from "@/components/signup-form";
+import { useState } from "react";
+import { useSignup } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUpPage() {
+  const navigate = useNavigate();
+  const signup = useSignup();
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (form.password !== form.confirm) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const { name, email, password } = form;
+    signup.mutate(
+      { name, email, password },
+      {
+        onSuccess: () => navigate("/"),
+      }
+    );
+  };
+
   return (
     <div className="grid min-h-svh w-full lg:grid-cols-2">
       <div className="relative hidden bg-muted lg:block">
@@ -26,6 +58,9 @@ export default function SignUpPage() {
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
             <SignUpForm
+              onSubmit={handleSubmit}
+              onChange={handleChange}
+              values={form}
               onGithubSignUp={() => (window.location.href = "/api/auth/github")}
               onGoogleSignUp={() => (window.location.href = "/api/auth/google")}
             />

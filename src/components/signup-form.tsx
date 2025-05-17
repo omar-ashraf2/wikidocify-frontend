@@ -6,18 +6,30 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { NavLink } from "react-router-dom";
 
-type Props = React.ComponentPropsWithoutRef<"form"> & {
+interface SignUpFormProps {
+  className?: string;
+  values?: {
+    name: string;
+    email: string;
+    password: string;
+    confirm: string;
+  };
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onGoogleSignUp?: () => void;
   onGithubSignUp?: () => void;
-};
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+  [key: string]: unknown;
+}
 
 export function SignUpForm({
   className,
+  values,
+  onChange,
   onGoogleSignUp,
   onGithubSignUp,
   onSubmit,
   ...props
-}: Props) {
+}: SignUpFormProps) {
   return (
     <form
       className={cn("flex flex-col gap-6", className)}
@@ -33,18 +45,51 @@ export function SignUpForm({
 
       <div className="grid gap-6">
         <div className="grid gap-2">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            type="text"
+            placeholder="John Doe"
+            required
+            value={values?.name || ""}
+            onChange={onChange}
+          />
+        </div>
+
+        <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <Input
+            id="email"
+            type="email"
+            placeholder="m@example.com"
+            required
+            value={values?.email || ""}
+            onChange={onChange}
+          />
         </div>
 
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" required minLength={6} />
+          <Input
+            id="password"
+            type="password"
+            required
+            minLength={6}
+            value={values?.password || ""}
+            onChange={onChange}
+          />
         </div>
 
         <div className="grid gap-2">
           <Label htmlFor="confirm">Confirm password</Label>
-          <Input id="confirm" type="password" required minLength={6} />
+          <Input
+            id="confirm"
+            type="password"
+            required
+            minLength={6}
+            value={values?.confirm || ""}
+            onChange={onChange}
+          />
         </div>
 
         <Button type="submit" className="w-full">

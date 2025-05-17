@@ -6,18 +6,26 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { NavLink } from "react-router-dom";
 
-type Props = React.ComponentPropsWithoutRef<"form"> & {
+interface LoginFormProps
+  extends Omit<React.ComponentPropsWithoutRef<"form">, "onChange"> {
+  values?: {
+    email: string;
+    password: string;
+  };
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onGoogleLogin?: () => void;
   onGithubLogin?: () => void;
-};
+}
 
 export function LoginForm({
   className,
+  values,
+  onChange,
   onGoogleLogin,
   onGithubLogin,
   onSubmit,
   ...props
-}: Props) {
+}: LoginFormProps) {
   return (
     <form
       className={cn("flex flex-col gap-6", className)}
@@ -34,7 +42,14 @@ export function LoginForm({
       <div className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <Input
+            id="email"
+            type="email"
+            placeholder="m@example.com"
+            required
+            value={values?.email || ""}
+            onChange={onChange}
+          />
         </div>
 
         <div className="grid gap-2">
@@ -47,7 +62,13 @@ export function LoginForm({
               Forgot your password?
             </a>
           </div>
-          <Input id="password" type="password" required />
+          <Input
+            id="password"
+            type="password"
+            required
+            value={values?.password || ""}
+            onChange={onChange}
+          />
         </div>
 
         <Button type="submit" className="w-full">
