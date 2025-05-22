@@ -6,7 +6,7 @@ export const login = (data: { email: string; password: string }) =>
 export const signup = (data: { name: string; email: string; password: string }) =>
   api.post("/api/v1/auth/register", data);
 
-export const getMe = () => api.get("/api/v1/auth/me");
+export const getMe = () => api.get("/api/v1/user/me");
 
 export const refreshToken = (refreshToken: string) =>
   api.post("/api/v1/auth/refresh", { refreshToken });
