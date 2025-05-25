@@ -27,12 +27,14 @@ interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   logout: () => void;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const queryClient = useQueryClient();
 
   const runRefresh = async () => {
@@ -54,8 +56,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     let interval: number | undefined;
 
     const bootstrap = async () => {
+      setIsLoading(true);
       const access = getAccessToken();
-      if (!access) return;
+      if (!access) {
+        setIsLoading(false);
+        return;
+      }
 
       if (isExpired(access)) await runRefresh();
 
@@ -65,6 +71,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } catch {
         clearTokens();
       }
+
+      setIsLoading(false);
 
       interval = window.setInterval(async () => {
         const token = getAccessToken();
@@ -87,7 +95,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [logout]);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
