@@ -1,7 +1,7 @@
 import { ErrorPage, NotFoundPage } from "@/pages/fallback";
 import PrivateRoute from "@/routes/PrivateRoute";
 import { lazy } from "react";
-import { createBrowserRouter, redirect } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 
 const RootLayout = lazy(() => import("@/layouts/RootLayout"));
 const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
@@ -42,8 +42,5 @@ export const router = createBrowserRouter([
   {
     path: "*",
     element: <NotFoundPage />,
-    loader: () => {
-      throw redirect("/");
-    },
   },
 ]);
