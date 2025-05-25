@@ -1,12 +1,21 @@
-import { getMe, refreshToken } from "../api/auth";
+import { getMe, refreshToken as refreshTokenApi } from "@/api/auth";
+import { isExpired } from "@/utils/jwt";
 import {
+  clearTokens,
   getAccessToken,
   getRefreshToken,
   setTokens,
-  clearTokens,
-} from "../utils/storage";
+} from "@/utils/storage";
 import { useQueryClient } from "@tanstack/react-query";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface User {
   id: string;
@@ -26,30 +35,56 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const queryClient = useQueryClient();
 
-  const fetchUser = async () => {
-    try {
-      const res = await getMe();
-      setUser(res.data);
-    } catch {
-      const refresh = getRefreshToken();
-      if (refresh) {
-        const res = await refreshToken(refresh);
-        setTokens(res.data.access.token, res.data.refresh?.token || refresh);
-        const me = await getMe();
-        setUser(me.data);
-      }
-    }
+  const runRefresh = async () => {
+    const refresh = getRefreshToken();
+    if (!refresh) throw new Error("no refresh token");
+
+    const { data } = await refreshTokenApi(refresh);
+    setTokens(data.access.token, data?.refresh?.token ?? refresh);
+    return data.access.token;
   };
 
-  useEffect(() => {
-    if (getAccessToken()) fetchUser();
-  }, []);
-
-  const logout = () => {
+  const logout = useCallback(() => {
     clearTokens();
     setUser(null);
     queryClient.clear();
-  };
+  }, [queryClient]);
+
+  useEffect(() => {
+    let interval: number | undefined;
+
+    const bootstrap = async () => {
+      const access = getAccessToken();
+      if (!access) return;
+
+      if (isExpired(access)) await runRefresh();
+
+      try {
+        const me = await getMe();
+        setUser(me.data);
+      } catch {
+        clearTokens();
+      }
+
+      interval = window.setInterval(async () => {
+        const token = getAccessToken();
+        if (!token) return;
+        if (
+          isExpired(token) ||
+          Date.now() >= jwtDecode<{ exp: number }>(token).exp * 1000 - 30_000
+        ) {
+          try {
+            await runRefresh();
+          } catch {
+            logout();
+          }
+        }
+      }, 15_000);
+    };
+
+    bootstrap();
+    return () => clearInterval(interval);
+  }, [logout]);
 
   return (
     <AuthContext.Provider value={{ user, setUser, logout }}>
@@ -59,7 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useAuthContext = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within AuthProvider");
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuthContext must be inside AuthProvider");
+  return ctx;
 };
