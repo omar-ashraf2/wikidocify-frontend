@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { LoaderIcon } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 interface LoginFormProps
@@ -15,6 +16,7 @@ interface LoginFormProps
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onGoogleLogin?: () => void;
   onGithubLogin?: () => void;
+  isLoading?: boolean;
 }
 
 export function LoginForm({
@@ -24,6 +26,7 @@ export function LoginForm({
   onGoogleLogin,
   onGithubLogin,
   onSubmit,
+  isLoading,
   ...props
 }: LoginFormProps) {
   return (
@@ -72,7 +75,11 @@ export function LoginForm({
         </div>
 
         <Button type="submit" className="w-full">
-          Login
+          {isLoading ? (
+            <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            "Login"
+          )}
         </Button>
 
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { LoaderIcon } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 interface SignUpFormProps {
@@ -19,6 +20,7 @@ interface SignUpFormProps {
   onGithubSignUp?: () => void;
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   [key: string]: unknown;
+  isLoading?: boolean;
 }
 
 export function SignUpForm({
@@ -28,6 +30,7 @@ export function SignUpForm({
   onGoogleSignUp,
   onGithubSignUp,
   onSubmit,
+  isLoading,
   ...props
 }: SignUpFormProps) {
   return (
@@ -93,7 +96,11 @@ export function SignUpForm({
         </div>
 
         <Button type="submit" className="w-full">
-          Sign up
+          {isLoading ? (
+            <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            "Sign up"
+          )}
         </Button>
 
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
