@@ -17,7 +17,7 @@ export const useLogin = () => {
     },
     onError: (err: AxiosError) => {
       const errorResponse = err?.response?.data as { error?: string };
-      toast(errorResponse?.error || "Error occurred during login");
+      toast.error(errorResponse?.error || "Error occurred during login");
     },
   });
 };
@@ -34,7 +34,7 @@ export const useSignup = () => {
     },
     onError: (err: AxiosError) => {
       const errorResponse = err?.response?.data as { error?: string };
-      toast(errorResponse?.error || "Error occurred during signup");
+      toast.error(errorResponse?.error || "Error occurred during signup");
     },
   });
 };

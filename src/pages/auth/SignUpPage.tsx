@@ -1,8 +1,9 @@
-import { GalleryVerticalEnd } from "lucide-react";
 import { SignUpForm } from "@/components/signup-form";
-import { useState } from "react";
 import { useSignup } from "@/hooks/useAuth";
+import { GalleryVerticalEnd } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function SignUpPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (form.password !== form.confirm) {
-      alert("Passwords do not match");
+      toast.warning("Passwords do not match");
       return;
     }
 

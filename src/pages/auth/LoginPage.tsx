@@ -2,7 +2,7 @@ import { LoginForm } from "@/components/login-form";
 import { useLogin } from "@/hooks/useAuth";
 import { GalleryVerticalEnd } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -36,12 +36,12 @@ export default function LoginPage() {
 
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
-          <a href="/" className="flex items-center gap-2 font-medium">
+          <NavLink to="/" className="flex items-center gap-2 font-medium">
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <GalleryVerticalEnd className="size-4" />
             </div>
             Home
-          </a>
+          </NavLink>
         </div>
 
         <div className="flex flex-1 items-center justify-center">
